@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Await } from "react-router-dom";
 const API = 'https://pokeapi.co/api/v2'
 
 function usePokemon(){
@@ -7,16 +6,34 @@ function usePokemon(){
 const [pokemonDetails, setPokemonDetails] = React.useState([])
 const [error, setError] = React.useState(true)
 const [loading, setLoading]=React.useState(true)
+const [searchValueName, setSearchValueName] = React.useState('')
+
 
 
 console.log(loading);
 console.log(pokemonDetails);
 
+let searchedPokemon
+
+if(!searchValueName.length){
+  
+    searchedPokemon = pokemonDetails
+  }else if (searchValueName.length>=1 ){
+      
+    searchedPokemon = pokemonDetails.filter(p => {
+      const pokemonName = p.name.toLowerCase()
+      const searchText = searchValueName.toLowerCase()
+      const validacion = pokemonName.includes(searchText)
+      return validacion
+    
+    })}
+    console.log('searchedPokemon');
+    console.log(searchedPokemon);
 
 
     const  getData = async ()=>{
         try {         
-            const response = await (fetch(`${API}/pokemon?limit=20&offset=0`))
+            const response = await (fetch(`${API}/pokemon?limit=50`))
             const result = await response.json()
             const pokemon = result.results
              return pokemon
@@ -64,8 +81,8 @@ console.log(pokemonDetails);
         }
        }
 
-  
-   
+    
+
     useEffect(()=>{
 
         
@@ -88,8 +105,11 @@ console.log(pokemonDetails);
    
     return{
         pokemonDetails,
+        searchedPokemon,
         loading,
-        setLoading
+        searchValueName, 
+        setLoading,
+        setSearchValueName
     }
 }
 

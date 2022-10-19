@@ -1,11 +1,17 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import { PokemonSearch } from './PokemonSearch';
 import { usePokemon } from './usePokemon';
 
 
 function HomePage( ) {
 
-  const  {pokemonDetails,loading,setLoading} = usePokemon()
+  const  {
+    pokemonDetails,
+    loading,
+    searchedPokemon,
+    setSearchValueName,
+    searchValueName} = usePokemon()
 
 //  loadPokemon()
 
@@ -16,9 +22,13 @@ if (loading) {
   return (
    <>
    <h1>Home Page</h1>
+    <PokemonSearch
+    setSearchValueName={setSearchValueName}
+    searchValueName={searchValueName}
+    />
     
         <ul>
-          {pokemonDetails.map(pokemon => (
+          {searchedPokemon.map(pokemon => (
             <PokemonLink key={pokemon.name} pokemon={pokemon} />
           ))}
         </ul>
